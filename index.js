@@ -1,20 +1,41 @@
+import dotenv from "dotenv"
 import express from 'express'
-import dotenv from 'dotenv'
 import mongoose from 'mongoose'
 import authRouter from "./Routes/routes.js"
+import bodyParser from 'body-parser'
 
+ const app=express()
  dotenv.config()
+ //middlewares
+ app.use(bodyParser.urlencoded({ extended: true }))
+ app.use(bodyParser.json())
+ app.use(express.json({extended:true}))
+ //routes 
+ app.use("/api/users",authRouter)
+
+
+ const mongoDB = "mongodb://localhost:27017/backendecommerce"
  
- mongoose.connect("mongodb://localhost:27017/backendecommerce")
-const app=express()
+ async function main(){
+    try{
+        await mongoose.connect(mongoDB)
+        console.log("Database connected...");
+    }
+    catch(err){
+        console.log(err);
+    }
+ }
+ main()
+
+
     const PORT=process.env.PORT||7000
 
 
 
-    //middlewares
-    app.use(express.json())
-    app.use("/api/users",authRouter)
+
+   
+
 
 app.listen(PORT,()=>{
     console.log(`server running on http://localhost${PORT}`);
-})
+})  

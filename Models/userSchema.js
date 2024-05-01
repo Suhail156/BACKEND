@@ -3,27 +3,24 @@ import mongoose from "mongoose";
 const userSchema=new mongoose.Schema({
     username:{
         type:String,
-        require:true
+        required:true 
+    },
+    image:{
+        type:String,
+        required:true
     },
     email:{
         type:String,
-        require:true
+        required:true
     },
     password:{
         type:String,
-        require:true
+        required:true
     },
-    profileImg:{
-        type:String,
-        require:true
-    },
-    profileThumbImg:{
-        type:String,
-        require:true
-    },
+    
     accountCreatedDate:{
         type:Date,
-        require:true,
+        required:true,
         default:Date.now
     },
     isDeleted:{
