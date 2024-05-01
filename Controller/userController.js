@@ -1,4 +1,4 @@
-import userjoi from "../Middlewares/joivalidation.js";
+import userjoi from "../Validation/joivalidation.js";
 import User from "../Models/userSchema.js";
 import Jwt from "jsonwebtoken";
 import bcrypt from "bcrypt"
@@ -79,7 +79,7 @@ export const login=async(req,res,next)=>{
    //cookie
    res.cookie("access_token",token,{httpOnly:true,expires:expirydate})
    .status(200).json(rest)
-   
+
   } catch (error) {
     next(error)
   }

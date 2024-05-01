@@ -3,16 +3,17 @@ import express from 'express'
 import mongoose from 'mongoose'
 import authRouter from "./Routes/routes.js"
 import bodyParser from 'body-parser'
-
+import adminRouter from "./Routes/adminRoute.js"
  const app=express()
  dotenv.config()
  //middlewares
  app.use(bodyParser.urlencoded({ extended: true }))
  app.use(bodyParser.json())
  app.use(express.json({extended:true}))
- //routes 
+ //routes user
  app.use("/api/users",authRouter)
-
+// routes products admin
+ app.use("/api/admin",adminRouter)
 
  const mongoDB = "mongodb://localhost:27017/backendecommerce"
  
