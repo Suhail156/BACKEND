@@ -8,10 +8,7 @@ export const signup = async (req, res) => {
     const { value, error } = userjoi.validate(req.body);
 
     if (error) {
-      return res.status(400).json({
-        status: "error",
-        message: error.details[0].message,
-      });
+      return res.status(400).json({status: "error",message: error.details[0].message});
     }
 
     const { username, image, email, password } = value;
@@ -21,9 +18,7 @@ export const signup = async (req, res) => {
     const existingUser = await User.findOne({ email:email });
     if (existingUser) {
       return res.status(400).json({
-        status: "error",
-        message: "Username already taken!",
-      });
+        status: "error",message: "Username already taken!"});
     }
 
 
@@ -40,17 +35,12 @@ export const signup = async (req, res) => {
     // Save new user to database
     await newUser.save();
 
-    return res.status(201).json({
-      status: "success",
-      message: "User registered successfully",
+    return res.status(201).json({ status: "success",message: "User registered successfully",
       data:newUser
     });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({
-      status: "error",
-      message: "An unexpected error occurred",
-    });
+    return res.status(500).json({status: "error",message: "An unexpected error occurred"});
   }
 };
 

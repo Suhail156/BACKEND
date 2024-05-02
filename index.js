@@ -4,6 +4,7 @@ import mongoose from 'mongoose'
 import authRouter from "./Routes/routes.js"
 import bodyParser from 'body-parser'
 import adminRouter from "./Routes/adminRoute.js"
+import productRouter from "./Routes/productRoute.js"
  const app=express()
  dotenv.config()
  //middlewares
@@ -12,6 +13,7 @@ import adminRouter from "./Routes/adminRoute.js"
  app.use(express.json({extended:true}))
  //routes user
  app.use("/api/users",authRouter)
+ app.use("/api/users",productRouter)
 // routes products admin
  app.use("/api/admin",adminRouter)
 
