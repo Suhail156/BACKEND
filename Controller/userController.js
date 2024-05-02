@@ -69,7 +69,7 @@ export const login=async(req,res,next)=>{
    //cookie
    res.cookie("access_token",token,{httpOnly:true,expires:expirydate})
    .status(200).json(rest)
-
+    res.status(200).json({message:"successfully login",data:uservalid})
   } catch (error) {
     next(error)
   }

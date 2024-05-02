@@ -7,6 +7,6 @@ const router=express.Router()
 
 //product
 router.post("/createProducts",imageUpload,createProducts)
-
+   
 
 export default router

@@ -26,7 +26,11 @@ const userSchema=new mongoose.Schema({
     isDeleted:{
         type:Boolean,
         default:false
-    }
+    },
+    cart:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Cart"
+    }]
 })
 
 const User=mongoose.model("User",userSchema)
