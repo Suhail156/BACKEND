@@ -30,6 +30,10 @@ const userSchema=new mongoose.Schema({
     cart:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Cart"
+    }],
+    whishlist:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Whishlist"
     }]
 })
 

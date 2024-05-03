@@ -14,6 +14,6 @@ router.get("/products/category/:categoryname",verifytoken,productByCategory)
  router.get("/:id/cart",verifytoken,viewCart)
  router.patch("/:userid/cart/:productid/increment",verifytoken,addCartQuantity)
  router.patch("/:userid/cart/:productid/decrement",verifytoken,decremntQuantity)
- router.delete("/:userId/cart/:productId/remove",removeCart)
+ router.delete("/:userId/cart/:productId/remove",verifytoken,removeCart)
 
 export default router   
