@@ -8,7 +8,7 @@ export const signup = async (req, res) => {
     const { value, error } = userjoi.validate(req.body);
 
     if (error) {
-      return res.status(400).json({status: "error",message: error.details[0].message});
+      return res.status(400).json({status: "error"});
     }
 
     const { username, image, email, password } = value;
@@ -18,7 +18,7 @@ export const signup = async (req, res) => {
     const existingUser = await User.findOne({ email:email });
     if (existingUser) {
       return res.status(400).json({
-        status: "error",message: "Username already taken!"});
+        status: "error",message: "email already taken!"});
     }
 
 

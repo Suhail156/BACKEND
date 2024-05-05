@@ -31,9 +31,9 @@ const userSchema=new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"Cart"
     }],
-    whishlist:[{
+    wishlist:[{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"Whishlist"
+        ref:"Wishlist"
     }]
 })
 

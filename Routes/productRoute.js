@@ -2,6 +2,7 @@ import express from 'express'
 import { productByCategory, productById, viewProduct } from '../Controller/productController.js'
 import { verifytoken } from '../middlewares/authMiddleware.js'
 import { addCartQuantity, addToCart, decremntQuantity, removeCart, viewCart } from '../Controller/cartController.js'
+import { addToWishlist, removewishlist, viewWishlist } from '../Controller/wishlistController.js'
 
 const router=express.Router()
 //products 
@@ -15,5 +16,8 @@ router.get("/products/category/:categoryname",verifytoken,productByCategory)
  router.patch("/:userid/cart/:productid/increment",verifytoken,addCartQuantity)
  router.patch("/:userid/cart/:productid/decrement",verifytoken,decremntQuantity)
  router.delete("/:userId/cart/:productId/remove",verifytoken,removeCart)
-
+//whishlist
+router.post("/:userid/wishlist/:productid",addToWishlist)
+router.get("/:id/wishlist",viewWishlist)
+router.delete("/:userid/wishlist/:productid/remove",removewishlist)
 export default router   

@@ -1,7 +1,6 @@
-import { required } from "joi";
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 
-const whishlistSchema=new  mongoose.Schema({
+const wishlistSchema=new  mongoose.Schema({
     userId:{
     type: mongoose.Schema.Types.ObjectId,
     ref:"User",
@@ -17,5 +16,5 @@ const whishlistSchema=new  mongoose.Schema({
         default:1
     }
 })
-const Whishlist=mongoose.model("Whishlist",whishlistSchema)
-export default Whishlist
+const Wishlist=mongoose.model("Wishlist",wishlistSchema)
+export default Wishlist
