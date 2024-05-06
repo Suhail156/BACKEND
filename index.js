@@ -19,25 +19,25 @@ import productRouter from "./Routes/productRoute.js"
 
  const mongoDB = "mongodb://localhost:27017/backendecommerce"
  
- async function main(){
-    try{
-        await mongoose.connect(mongoDB)
-        console.log("Database connected...");
-    }
-    catch(err){
-        console.log(err);
-    }
- }
- main()
-
+ 
+ 
 
     const PORT=process.env.PORT||7000
 
-    
+    async function main(){
+        try{
+            await mongoose.connect(mongoDB)
+            console.log("Database connected...");
+        }
+        catch(err){
+            console.log(err);
+        }
+     }
+     main()
 
 
    
-
+    
 
 app.listen(PORT,()=>{
     console.log(`server running on http://localhost${PORT}`);
