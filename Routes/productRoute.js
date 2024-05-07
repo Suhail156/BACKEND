@@ -3,7 +3,7 @@ import { productByCategory, productById, viewProduct } from '../Controller/produ
 import { verifytoken } from '../middlewares/authMiddleware.js'
 import { addCartQuantity, addToCart, decremntQuantity, removeCart, viewCart } from '../Controller/cartController.js'
 import { addToWishlist, removewishlist, viewWishlist } from '../Controller/wishlistController.js'
-import { payment } from '../Controller/userPaymentController.js'
+// import { payment } from '../Controller/userPaymentController.js'
 
 const router=express.Router()
 //products 
@@ -24,4 +24,4 @@ router.delete("/:userid/wishlist/:productid/remove",removewishlist)
 export default router   
 
 //payment
-router.post("/:userid/payment",payment)
+// router.post("/:userid/payment",payment)
