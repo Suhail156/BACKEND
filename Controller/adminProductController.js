@@ -36,3 +36,47 @@ import productJoi from "../Validation/productValidation.js";
         
     }
  }
+
+
+// view all products
+
+   export const viewAdminProducts=async(req,res)=>{
+
+         const allproducts=await Products.find()
+         if(!allproducts){
+            res.status(404).json({message:"product not found"})
+         }
+         res.status(200).json({status:"success",message:"successfully fetched data",data:allproducts})
+      
+   
+   }
+
+   // view products by id
+
+   export const getByIdProduct=async(req,res)=>{
+      const productId=req.params.productid
+      const products=await Products.findById(productId)
+      if(!products){
+         res.status(404).json({message:"product not found"})
+      }
+      res.status(200).json(products)
+   }
+
+
+   //view products by category
+
+   export const productsCategory=async(req,res)=>{
+      const {categoryname}=req.params
+      const product=await Products.find({
+         $or:[
+            {category:{$regex:new RegExp(categoryname,'i')}},
+            {title:{$regex:new RegExp(categoryname,'i')}}
+        ]
+    }).select('title category price')
+       if(product.length===0){
+        return res.status(404).json({message:"no item found"})
+       }
+       res.status(200).json({product})
+   }
+
+   
