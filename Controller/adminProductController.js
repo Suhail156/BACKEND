@@ -114,30 +114,79 @@ export const  viewAllproducts =async(req,res)=>{
    
    //find and update product
 
+   // export const adminUpdateProduct = async (req, res, next) => {
+   //    try {
+   //       const { productid } = req.params;
+   //       const product = await Products.findById(productid);
+   //        console.log("befor update",product);
+   //       if (!product) {
+   //          return res.status(404).json({ message: "Product not found" });
+   //       }
+   
+   //       const { title, category, description, price, image } = req.body;
+   
+   //       if (title) product.title = title;
+   //       if (category) product.category = category;
+   //       if (description) product.description = description;
+   //       if (price) product.price = price;
+   //       if (image) product.image = image;
+   
+   //       await product.save();
+   
+   //       console.log("After Update:", product);
+   
+   //       res.status(200).json({ message: "Product successfully updated", data: product });
+   //    } catch (error) {
+   //       next(error);
+   //    }
+   // };
+   
+
+
    export const adminUpdateProduct = async (req, res, next) => {
       try {
-         const { productid } = req.params;
-         const product = await Products.findById(productid);
+         console.log("Request Body:", req.body);
    
-         if (!product) {
-            return res.status(404).json({ message: "Product not found" });
+         // Validate request body using Joi schema
+         const { value, error } = productJoi.validate(req.body);
+   
+         // Log Joi validation result
+         console.log("Joi Validation Result:", { value, error });
+   
+         // Check for Joi validation error
+         if (error) {
+            console.error("Joi Validation Error:", error);
+            return res.status(400).json({ message: "Invalid request body" });
          }
    
-         const { title, category, description, price, image } = req.body;
+         // Destructure validated data
+         const { id, title, description, price, image, category } = value;
    
-         if (title) product.title = title;
-         if (category) product.category = category;
-         if (description) product.description = description;
-         if (price) product.price = price;
-         if (image) product.image = image;
+         // Log validated product data
+         console.log("Validated Product Data:", { id, title, description, price, image, category });
    
-         await product.save();
+         // Update product in the database
+         const updatedProduct = await Products.findByIdAndUpdate(
+            id,
+            { $set: { title, description, price, image, category } },
+            { new: true }
+         );
    
-         console.log("After Update:", product);
+         // Log updated product
+         console.log("Updated Product:", updatedProduct);
    
-         res.status(200).json({ message: "Product successfully updated", data: product });
+         // Check if product was successfully updated
+         if (updatedProduct) {
+            // Respond with success message and updated product data
+            return res.status(200).json({ message: "Product updated successfully", data: updatedProduct });
+         } else {
+            // Respond with 404 if product not found
+            return res.status(404).json({ message: "Product not found" });
+         }
       } catch (error) {
+         // Log and pass any errors to the error handling middleware
+         console.error("Update Error:", error);
          next(error);
       }
-   };
+   }
    

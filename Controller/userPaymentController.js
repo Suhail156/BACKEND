@@ -1,9 +1,11 @@
 import User from "../Models/userSchema.js";
 import dotenv from "dotenv"
+dotenv.config()
 import stripe from 'stripe'
 import Orders from "../Models/orderSchema.js";
+import Cart from "../Models/cartSchema.js"
 
-dotenv.config()
+
 
 const stripeInstance = stripe(process.env.STRIPE_SECURITY_KEY);
 
@@ -81,7 +83,8 @@ export const success = async (req, res, next) => {
   try {
     const { userId, user, session } = Svalue;
 
-    const cartItems = user.cart;
+    const cartItems= user.cart
+
     const productItems = cartItems.map((item) => item.productId._id.toString());
 
     const order = await Orders.create({
@@ -116,3 +119,20 @@ export const success = async (req, res, next) => {
     return next(error);
   }
 };
+
+
+export const orderDetails=async(req,res)=>{
+  const userId=req.params.userid
+
+  const user=await User.findById(userId).populate({
+       path:"orders",
+       populate:{path:"productId"}
+  })
+  if(!user){
+    res.status(404).json({message:"user not found"})
+  }
+  if(!user.orders||user.orders.length===0){
+   res.status(200).json({message:"user order is empty",data:[]})
+  }
+  res.status(200).json(user.orders)
+}

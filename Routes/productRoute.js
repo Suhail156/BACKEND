@@ -3,7 +3,7 @@ import { productByCategory, productById, viewProduct } from '../Controller/produ
 import { verifytoken } from '../middlewares/authMiddleware.js'
 import { addCartQuantity, addToCart, decremntQuantity, removeCart, viewCart } from '../Controller/cartController.js'
 import { addToWishlist, removewishlist, viewWishlist } from '../Controller/wishlistController.js'
-import { payment, success } from '../Controller/userPaymentController.js'
+import { orderDetails, payment, success } from '../Controller/userPaymentController.js'
 
 
 const router=express.Router()
@@ -27,3 +27,4 @@ export default router
 //payment
 router.post("/:userid/payment",payment)
 router.get("/payment/success",success)
+router.get("/:userid/orderdetails",orderDetails)
