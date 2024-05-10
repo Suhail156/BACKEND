@@ -85,6 +85,8 @@ export const success = async (req, res, next) => {
 
     const cartItems= user.cart
 
+    console.log(cartItems,"jkbekjr");
+
     const productItems = cartItems.map((item) => item.productId._id.toString());
 
     const order = await Orders.create({

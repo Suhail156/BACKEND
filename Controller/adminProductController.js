@@ -115,33 +115,75 @@ export const  viewAllproducts =async(req,res)=>{
    
    //find and update product
 
-   export const adminUpdateProduct = async (req, res, next) => {
-      try {
-         const { productid } = req.params;
-         const findproduct = await Products.findById(productid);
-          console.log("befor update",findproduct);
-         if (!findproduct) {
-            return res.status(404).json({ message: "Product not found" });
-         }
+   // export const adminUpdateProduct = async (req, res, next) => {
+   //    try {
+   //       const { productid } = req.params;
+   //       const findproduct = await Products.findById(productid);
+   //        console.log("befor update",findproduct);
+   //       if (!findproduct) {
+   //          return res.status(404).json({ message: "Product not found" });
+   //       }
    
-         const { title, category, description, price, image } = req.body;
+   //       const { title, category, description, price} = req.body;
+
+
+   //       console.log("body",title);
    
-         if (title) findproduct.title = title;
-         if (category) findproduct.category = category;
-         if (description) findproduct.description = description;
-         if (price) findproduct.price = price;
-         if (image) findproduct.image = image;
+   //       if (title) findproduct.title = title;
+   //       if (category) findproduct.category = category;
+   //       if (description) findproduct.description = description;
+   //       if (price) findproduct.price = price;
+   //       // if (image) findproduct.image = image;
    
-         await findproduct.save();
+   //       await findproduct.save();
    
-         console.log("After Update:", findproduct);
+   //       console.log("After Update:", findproduct);
    
-         res.status(200).json({ message: "Product successfully updated", data: findproduct });
-      } catch (error) {
-         next(error);
-      }
-   };
+   //       res.status(200).json({ message: "Product successfully updated", data: findproduct });
+   //    } catch (error) {
+   //       next(error);
+   //    }
+   // };
    
+//try
+export const adminUpdateProduct=async(req,res)=>{
+   try{
+
+      const productId=req.params.id;
+      const {title,description,price,image,category} = req.body
+
+      console.log("body",req.body);
+      
+      const updatedProduct = await Products.findByIdAndUpdate(
+          productId,
+          {$set:{title,description,price,image,category}},
+          {new:true}//this option returns the modified document rather than the orginal
+      );
+      // console.log(updatedProduct)
+      
+
+    if (updatedProduct) {
+      const updatedProduct = await Products.findById(productId);
+      return res.status(200).json({
+          status:"success",
+          message:"successfully updated the product",
+          data:updatedProduct,
+      })
+
+    }else{
+      return res.status(404).json({status:"error", message:"product not found"})
+    }
+  }catch(error){
+      console.error("error updating product",error);
+      return res.status(500).json({status:"error",message:"internal server Error"});
+  }
+}
+
+
+
+
+
+
 
    export const deleteProduct=async(req,res)=>{
       try {

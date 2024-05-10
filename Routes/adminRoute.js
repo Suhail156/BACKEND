@@ -20,7 +20,7 @@ router.get("/:id",adminToken,userGetById)
 router.post("/createProducts",imageUpload,createProducts)
 router.get("/:productid/product",adminToken,getByIdProduct)  
 router.get("/:categoryname/products",productByCategory)
-router.patch("/:productid/update",adminUpdateProduct)  //idint get
+router.patch("/:id/update",adminUpdateProduct)  //idint get
 router.get("/allproducts",adminToken,viewAllproducts)//ididnt get
 router.delete("/:productid/delete",deleteProduct)
 export default router
