@@ -14,6 +14,7 @@ import productJoi from "../Validation/productValidation.js";
       }
       const{title,description,price,category,image}=value
          const newProduct=new Products({
+
             title:title,
             description:description,
             price:price,
@@ -114,79 +115,48 @@ export const  viewAllproducts =async(req,res)=>{
    
    //find and update product
 
-   // export const adminUpdateProduct = async (req, res, next) => {
-   //    try {
-   //       const { productid } = req.params;
-   //       const product = await Products.findById(productid);
-   //        console.log("befor update",product);
-   //       if (!product) {
-   //          return res.status(404).json({ message: "Product not found" });
-   //       }
-   
-   //       const { title, category, description, price, image } = req.body;
-   
-   //       if (title) product.title = title;
-   //       if (category) product.category = category;
-   //       if (description) product.description = description;
-   //       if (price) product.price = price;
-   //       if (image) product.image = image;
-   
-   //       await product.save();
-   
-   //       console.log("After Update:", product);
-   
-   //       res.status(200).json({ message: "Product successfully updated", data: product });
-   //    } catch (error) {
-   //       next(error);
-   //    }
-   // };
-   
-
-
    export const adminUpdateProduct = async (req, res, next) => {
       try {
-         console.log("Request Body:", req.body);
-   
-         // Validate request body using Joi schema
-         const { value, error } = productJoi.validate(req.body);
-   
-         // Log Joi validation result
-         console.log("Joi Validation Result:", { value, error });
-   
-         // Check for Joi validation error
-         if (error) {
-            console.error("Joi Validation Error:", error);
-            return res.status(400).json({ message: "Invalid request body" });
-         }
-   
-         // Destructure validated data
-         const { id, title, description, price, image, category } = value;
-   
-         // Log validated product data
-         console.log("Validated Product Data:", { id, title, description, price, image, category });
-   
-         // Update product in the database
-         const updatedProduct = await Products.findByIdAndUpdate(
-            id,
-            { $set: { title, description, price, image, category } },
-            { new: true }
-         );
-   
-         // Log updated product
-         console.log("Updated Product:", updatedProduct);
-   
-         // Check if product was successfully updated
-         if (updatedProduct) {
-            // Respond with success message and updated product data
-            return res.status(200).json({ message: "Product updated successfully", data: updatedProduct });
-         } else {
-            // Respond with 404 if product not found
+         const { productid } = req.params;
+         const findproduct = await Products.findById(productid);
+          console.log("befor update",findproduct);
+         if (!findproduct) {
             return res.status(404).json({ message: "Product not found" });
          }
+   
+         const { title, category, description, price, image } = req.body;
+   
+         if (title) findproduct.title = title;
+         if (category) findproduct.category = category;
+         if (description) findproduct.description = description;
+         if (price) findproduct.price = price;
+         if (image) findproduct.image = image;
+   
+         await findproduct.save();
+   
+         console.log("After Update:", findproduct);
+   
+         res.status(200).json({ message: "Product successfully updated", data: findproduct });
       } catch (error) {
-         // Log and pass any errors to the error handling middleware
-         console.error("Update Error:", error);
          next(error);
       }
-   }
+   };
    
+
+   export const deleteProduct=async(req,res)=>{
+      try {
+         const productId=req.params.productid
+
+      const products=await Products.findByIdAndDelete(productId)
+
+      if(!products){
+         res.status(404).json({meassge:"product not found"})
+      }
+      res.status(200).json({message:"successfully delleted",data:products})
+      } catch (error) {
+         next(error)
+      }
+      
+   }
+
+  
