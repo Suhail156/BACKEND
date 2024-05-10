@@ -9,7 +9,7 @@ import productJoi from "../Validation/productValidation.js";
      if (error) {
         return res.status(400).json({
           status: "error",
-          message: error.details[0].message,
+          message: error.message,
         });
       }
       const{title,description,price,category,image}=value
@@ -40,26 +40,58 @@ import productJoi from "../Validation/productValidation.js";
 
 // view all products
 
-   export const viewAdminProducts=async(req,res)=>{
+   // export const viewAdminProducts= async(req,res, next)=>{
+   //    try {
+         
+   //                const allproducts=await Products.findOne();
 
-         const allproducts=await Products.find()
-         if(!allproducts){
-            res.status(404).json({message:"product not found"})
-         }
-         res.status(200).json({status:"success",message:"successfully fetched data",data:allproducts})
-      
+   //                console.log(allproducts, "poreooiie");
+                  
+   //                if(!allproducts){
+   //                   res.status(404).json({message:"product not found"})
+   //                }
+   //                res.status(200).json({status:"success",message:"successfully fetched data",data:allproducts})
+               
+         
+   //    } catch (error) {
+   //       next(error)
+   //    }
    
-   }
+   // }
 
+   
+export const  viewAllproducts =async(req,res)=>{
+   try {
+      const product=await Products.find()
+      console.log(product);
+      res.json(product) 
+      if(!product){ 
+          res.status(404).json({meassge:"unable to get products"})
+      }
+      res.status(200).json({status:"success",message:"successfully fetched data",data:product})
+   }
+   catch(error) {
+     console.log(error)
+   }
+ 
+}
    // view products by id
 
-   export const getByIdProduct=async(req,res)=>{
-      const productId=req.params.productid
-      const products=await Products.findById(productId)
-      if(!products){
-         res.status(404).json({message:"product not found"})
+   export const getByIdProduct=async(req,res,next)=>{
+
+
+      try {
+         const productId=req.params.productid
+
+         const products=await Products.findById(productId)
+         if(!products){
+           return res.status(404).json({message:"product not found"})
+         }
+         res.status(200).json(products)
+      } catch (error) {
+         next(error)
       }
-      res.status(200).json(products)
+     
    }
 
 
@@ -79,4 +111,33 @@ import productJoi from "../Validation/productValidation.js";
        res.status(200).json({product})
    }
 
+   
+   //find and update product
+
+   export const adminUpdateProduct = async (req, res, next) => {
+      try {
+         const { productid } = req.params;
+         const product = await Products.findById(productid);
+   
+         if (!product) {
+            return res.status(404).json({ message: "Product not found" });
+         }
+   
+         const { title, category, description, price, image } = req.body;
+   
+         if (title) product.title = title;
+         if (category) product.category = category;
+         if (description) product.description = description;
+         if (price) product.price = price;
+         if (image) product.image = image;
+   
+         await product.save();
+   
+         console.log("After Update:", product);
+   
+         res.status(200).json({ message: "Product successfully updated", data: product });
+      } catch (error) {
+         next(error);
+      }
+   };
    

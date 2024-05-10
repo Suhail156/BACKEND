@@ -4,20 +4,31 @@ import User from "../Models/userSchema.js"
 dotenv.config()
 
 
-export const adminLogin=async(req,res,next)=>{
-    try {
-        const{email,password}=req.body
-        if(email===process.env.ADMIN_EMAIL&&password===process.env.ADMIN_PASSWORD){
-           const token=Jwt.sign({email},process.env.ADMIN_ACCESS_TOKEN)
-           res.cookie('access_token',token,{httpOnly:true})
-           res.status(200).json({message:"admin logged successfully",token})
-        }
-}
-catch (error) {
 
-        next(error)
-}
-    } 
+
+export const adminLogin = async (req, res, next) => {
+    try {
+        const { email, password } = req.body;
+        
+        // Check if email and password match the admin credentials stored in environment variables
+        if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
+            // If credentials are correct, generate a JWT token
+            const token = Jwt.sign({ email }, process.env.ADMIN_ACCESS_TOKEN);
+
+            // Set the JWT token as a cookie with HttpOnly flag for security
+            res.cookie('access_token', token, { httpOnly: true });
+
+            // Respond with success message and the token
+            res.status(200).json({ message: "Admin logged in successfully", token });
+        } else {
+            // If credentials are incorrect, respond with unauthorized status
+            res.status(401).json({ message: "Unauthorized" });
+        }
+    } catch (error) {
+        // Pass any caught errors to the error handling middleware
+        next(error);
+    }
+};
 
    
   //admin view all users

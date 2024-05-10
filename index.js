@@ -17,23 +17,17 @@ import productRouter from "./Routes/productRoute.js"
 // routes products admin
  app.use("/api/admin",adminRouter)
 
- const mongoDB = "mongodb://localhost:27017/backendecommerce"
+
+ mongoose.connect(process.env.DB)
+ .then(() => console.log("DB connected"))
+ .catch((error) => console.log(error))
  
  
  
 
     const PORT=process.env.PORT||7000
 
-    async function main(){
-        try{
-            await mongoose.connect(mongoDB)
-            console.log("Database connected...");
-        }
-        catch(err){
-            console.log(err);
-        }
-     }
-     main()
+  
 
 
    
