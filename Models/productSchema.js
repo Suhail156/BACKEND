@@ -32,5 +32,5 @@ import mongoose from "mongoose";
     }
  })
 
- const Products=mongoose.model("Products",productSchema)
+ const Products=mongoose.model("products",productSchema)
  export default Products
