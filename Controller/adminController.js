@@ -55,6 +55,25 @@ export const userGetById=async(req,res)=>{
     res.status(200).json(allusers)
 
 }
+//block user 
+export const blockUserById=async(req,res)=>{
+    const{userId}=req.params
 
 
- 
+    const blockUser=await User.findOneAndUpdate({_id:userId},{$set:{isDeleted:true}})
+    if(!blockUser){
+        res.status(404).json({message:"user not found"})
+    }
+    res.status(200).json({message:"user blocked successfully"})
+}
+
+//unblock user
+
+export const unBlockUserById=async(req,res)=>{
+    const{userId}=req.params
+    const unBlock=await User.findOneAndUpdate({_id:userId},{$set:{isDeleted:false}})
+    if(!unBlock){
+        res.status(404).json({message:"user not found"})
+    }
+    res.status(200).json({message:"user successfully unblocked"})
+}

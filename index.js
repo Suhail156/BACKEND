@@ -7,7 +7,7 @@ import authRouter from './Routes/routes.js';
 import adminRouter from './Routes/adminRoute.js';
 import productRouter from './Routes/productRoute.js';
 
-// Load environment variables from .env file
+
 dotenv.config();
 
 // Create Express app
@@ -16,7 +16,7 @@ const app = express();
 // Middleware for parsing JSON bodies
 app.use(express.json());
 
-// Routes for user authentication
+// Routes for user 
 app.use('/api/users', authRouter);
 app.use('/api/users', productRouter);
 
@@ -28,7 +28,6 @@ mongoose.connect(process.env.DB)
   .then(() => console.log('DB connected'))
   .catch(error => console.log(error));
 
-// Define the port for the server to listen on
 const PORT = process.env.PORT || 7000;
 
 // Start the server
