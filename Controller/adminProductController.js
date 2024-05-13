@@ -171,6 +171,10 @@ export const adminUpdateProduct = async (req, res) => {
       .json({ status: "error", message: "internal server Error" });
   }
 };
+  
+
+
+
 
 export const deleteProduct = async (req, res) => {
   try {

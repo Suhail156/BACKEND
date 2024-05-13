@@ -15,18 +15,18 @@ router.get("/products/:id",TrycatchMiddleware(productById))
 router.get("/products/category/:categoryname",TrycatchMiddleware(productByCategory))
 
  //cart 
- router.post("/:userid/cart/:productid",addToCart)
- router.get("/:id/cart",viewCart)   
- router.patch("/:userid/cart/:productid/increment",addCartQuantity)
- router.patch("/:userid/cart/:productid/decrement",decremntQuantity)
- router.delete("/:userId/cart/:productId/remove",removeCart)
+ router.post("/:userid/cart/:productid",TrycatchMiddleware(addToCart))
+ router.get("/:id/cart",TrycatchMiddleware(viewCart))   
+ router.patch("/:userid/cart/:productid/increment",TrycatchMiddleware(addCartQuantity))
+ router.patch("/:userid/cart/:productid/decrement",TrycatchMiddleware(decremntQuantity))
+ router.delete("/:userId/cart/:productId/remove",TrycatchMiddleware(removeCart))
 //whishlist
-router.post("/:userid/wishlist/:productid",addToWishlist)
-router.get("/:id/wishlist",viewWishlist)
-router.delete("/:userid/wishlist/:productid/remove",removewishlist)
+router.post("/:userid/wishlist/:productid",TrycatchMiddleware(addToWishlist))
+router.get("/:id/wishlist",TrycatchMiddleware(viewWishlist))
+router.delete("/:userid/wishlist/:productid/remove",TrycatchMiddleware(removewishlist))
 export default router   
 
 //payment
-router.post("/:userid/payment",payment)
-router.get("/payment/success",success)
-router.get("/:userid/orderdetails",orderDetails)
+router.post("/:userid/payment",TrycatchMiddleware(payment))
+router.get("/payment/success",TrycatchMiddleware(success))
+router.get("/:userid/orderdetails",TrycatchMiddleware(orderDetails))

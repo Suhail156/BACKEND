@@ -4,23 +4,23 @@ import imageUpload from '../Middlewares/imageUpload/imageUpload.js'
 import { adminLogin, userGetById, viewAllusers } from '../Controller/adminController.js'
 import { adminToken} from '../Middlewares/adminMiddleware.js'
 import { productByCategory } from '../Controller/productController.js'
-
+import TrycatchMiddleware from '../Middlewares/tryCatchMiddleware.js'
 
 const router=express.Router()
 //login
-router.post("/login",adminLogin)
+router.post("/login",TrycatchMiddleware(adminLogin))
 
 router.use(adminToken)
 //admin
-router.get("/viewalluser",viewAllusers)
-router.get("/users/:id",userGetById)
+router.get("/viewalluser",TrycatchMiddleware(viewAllusers))
+router.get("/users/:id",TrycatchMiddleware(userGetById))
 
 
 //product
 router.post("/createProducts",imageUpload,createProducts)
-router.get("/:productid/product",getByIdProduct)  
-router.get("/:categoryname/products",productByCategory)
-router.get("/allproducts",viewProducts)
-router.patch("/:id/update",adminUpdateProduct)  //idint get
-router.delete("/:productid/delete",deleteProduct)
+router.get("/:productid/product",TrycatchMiddleware(getByIdProduct))  
+router.get("/:categoryname/products",TrycatchMiddleware(productByCategory))
+router.get("/allproducts",TrycatchMiddleware(viewProducts))
+router.patch("/:id/update",imageUpload,adminUpdateProduct) 
+router.delete("/:productid/delete",TrycatchMiddleware(deleteProduct))
 export default router
