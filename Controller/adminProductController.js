@@ -19,7 +19,7 @@ export const createProducts = async (req, res) => {
       image: image,
     });
     console.log("hiubfi");
-   //  await newProduct.save();
+    await newProduct.save();
     return res.status(201).json({
       status: "success",
       message: "product added successfully",
