@@ -10,7 +10,7 @@ const TrycatchMiddleware = (TrycatchHandler) => {
                 error_message: error.message
             });
         }
-        next()
+    
     }
 }
 export default TrycatchMiddleware
