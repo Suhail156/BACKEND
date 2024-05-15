@@ -6,7 +6,7 @@ import User from "../Models/userSchema.js";
 
  // product addToCart
 export const addToCart = async (req, res, next) => {
-  try {
+
     const userId = req.params.userid;
     const productId = req.params.productid;
 
@@ -41,16 +41,13 @@ export const addToCart = async (req, res, next) => {
       await user.save();
       return res.status(200).json({ message: "Product added to the cart" });
     }
-  } catch (error) {
-    
-    next(error);
-  }
+ 
 };
 
 // view cart
 
 export const viewCart=async(req,res,next)=>{
-    try {
+    
         const{id}=req.params
         const user=await User.findById(id)
         .populate({
@@ -61,16 +58,14 @@ export const viewCart=async(req,res,next)=>{
             res.status(404).json({meassage:"user not found"})
         }
         res.status(200).json(user.cart)
-    } catch (error) {
-        next(error)
-    }
+    
 }
 
 
 // add cart quantity
 
 export const addCartQuantity=async(req,res,next)=>{
-    try {
+  
         const userId=req.params.userid
         const productId=req.params.productid
         const{quantityIncrement}=req.body
@@ -99,13 +94,10 @@ export const addCartQuantity=async(req,res,next)=>{
           }
         }
           res.status(201).json({message:"quantity incremented"})
-    } catch (error) {
-        next(error)
-    }
 }
 
 export const decremntQuantity=async(req,res,next)=>{
-  try {
+
     const userId=req.params.userid
     const productId=req.params.productid
     const{quantityDecrement}=req.body
@@ -140,13 +132,10 @@ export const decremntQuantity=async(req,res,next)=>{
         
     }
     res.status(201).json({ message: "Quantity decremented" });
-} catch (error) {
-    next(error)
-}
 }
 
 export const removeCart=async(req,res,next)=>{
-  try {
+  
     const{userId,productId}=req.params
 
    //find by user
@@ -175,8 +164,5 @@ export const removeCart=async(req,res,next)=>{
     await user.save()
     res.status(200).json({message:"product removed successfully"})
    }
-  } catch (error) {
-    next(error)
-  }
    
 }
