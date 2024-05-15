@@ -2,7 +2,6 @@ import Products from "../Models/productSchema.js";
 import productJoi from "../Validation/productValidation.js";
 
 export const createProducts = async (req, res) => {
-  try {
     const { error, value } = productJoi.validate(req.body);
     if (error) {
       return res.status(400).json({
@@ -25,12 +24,7 @@ export const createProducts = async (req, res) => {
       message: "product added successfully",
       data: newProduct,
     });
-  } catch (error) {
-    return res.status(500).json({
-      status: "error",
-      message: "An unexpected error occurred",
-    });
-  }
+ 
 };
 
 // view all products
@@ -54,7 +48,7 @@ export const createProducts = async (req, res) => {
 // }
 
 export const  viewProducts =async(req,res)=>{
-   try {
+  
       const product=await Products.find()
       console.log(product);
    
@@ -62,21 +56,11 @@ export const  viewProducts =async(req,res)=>{
           res.status(404).json({meassge:"unable to get products"})
       }
       res.status(200).json({status:"success",message:"successfully fetched data",data:product})
-   }
-   catch(error) {
-   //   console.log(error)
-     return res.status(500).json({
-      status:"error",
-      message:"unexprected",
-      error:error.message
-     })
-   }
  
 }
 // view products by id
 
 export const getByIdProduct = async (req, res, next) => {
-  try {
     const productId = req.params.productid;
 
     const products = await Products.findById(productId);
@@ -84,9 +68,7 @@ export const getByIdProduct = async (req, res, next) => {
       return res.status(404).json({ message: "product not found" });
     }
     res.status(200).json(products);
-  } catch (error) {
-    next(error);
-  }
+ 
 };
 
 //view products by category
@@ -138,7 +120,6 @@ export const productsCategory = async (req, res) => {
 
 //try
 export const adminUpdateProduct = async (req, res) => {
-  try {
     const productId = req.params.id;
     console.log(productId);
     const { title, description, price, image, category } = req.body;
@@ -164,12 +145,7 @@ export const adminUpdateProduct = async (req, res) => {
         .status(404)
         .json({ status: "error", message: "product not found" });
     }
-  } catch (error) {
-    console.error("error updating product", error);
-    return res
-      .status(500)
-      .json({ status: "error", message: "internal server Error" });
-  }
+ 
 };
   
 

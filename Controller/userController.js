@@ -65,9 +65,10 @@ export const login=async(req,res,next)=>{
    const token=Jwt.sign({id:uservalid._id},process.env.USER_SECRET_TOKEN)
    const{password:hashedPassword, ...rest}=uservalid._doc
    const expirydate=new Date(Date.now() +60 * 1000)
-
+ const refreshToken=Jwt.sign({id:uservalid._id},process.env.REFRESH_ACCESS_TOKEN,{expiresIn:"10m"})
    //cookie
    res.cookie("access_token",token,{httpOnly:true,expires:expirydate})
+     res.cookie("refresh_token",refreshToken,{httpOnly:true})
    .status(200).json(rest)
     res.status(200).json({message:"successfully login",data:uservalid})
   } catch (error) {

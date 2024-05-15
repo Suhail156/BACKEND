@@ -9,7 +9,7 @@ import { allOrders } from '../Controller/adminOrders.js'
 
 const router=express.Router()
 //login
-router.post("/login",adminLogin)
+router.post("/login",TrycatchMiddleware(adminLogin))
 
 router.use(adminToken)
 //admin
