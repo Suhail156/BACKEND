@@ -28,15 +28,12 @@ export const adminLogin = async (req, res) => {
   //admin view all users
   
  export const viewAllusers=async(req,res,next)=>{
-    try {
         const viewUser=await User.find()
         if(viewUser.length===0){
             res.status(404).json({message:"no users in db"})
         }
         res.status(200).json(viewUser)
-    } catch (error) {
-       next(error) 
-    }
+    
    
  } 
 
