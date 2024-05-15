@@ -5,7 +5,7 @@ import Wishlist from "../Models/wishlistSchem.js"
 
 
 export const addToWishlist=async(req,res,next)=>{
-    try {
+
       
         const userId=req.params.userid
         const productId=req.params.productid
@@ -40,16 +40,11 @@ export const addToWishlist=async(req,res,next)=>{
      await user.save()
   
       res.status(200).json({message:"successfully added to wishlist"})
-    } catch (error) {
-        
-        next(error)
-    }
        
 
 }   
 // view user wishlist
  export const viewWishlist=async(req,res,next)=>{
-    try {
         const{id}=req.params
         const user=await User.findById(id).populate({
           path:"wishlist",
@@ -62,9 +57,6 @@ export const addToWishlist=async(req,res,next)=>{
               res.status(200).json({message:"user empty",data:[]})
             } 
             res.status(200).json({message:"success",data:user.wishlist})   
-    } catch (error) {
-        next(error)
-    }
  
  }
 
