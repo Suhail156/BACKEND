@@ -53,9 +53,9 @@ export const  viewProducts =async(req,res)=>{
       console.log(product);
    
       if(!product){ 
-          res.status(404).json({meassge:"unable to get products"})
+       return   res.status(404).json({meassge:"unable to get products"})
       }
-      res.status(200).json({status:"success",message:"successfully fetched data",data:product})
+     return res.status(200).json({status:"success",message:"successfully fetched data",data:product})
  
 }
 // view products by id
@@ -67,7 +67,7 @@ export const getByIdProduct = async (req, res, next) => {
     if (!products) {
       return res.status(404).json({ message: "product not found" });
     }
-    res.status(200).json(products);
+   return res.status(200).json(products);
  
 };
 
@@ -84,7 +84,7 @@ export const productsCategory = async (req, res) => {
   if (product.length === 0) {
     return res.status(404).json({ message: "no item found" });
   }
-  res.status(200).json({ product });
+  return res.status(200).json({ product });
 };
 
 //find and update product
@@ -121,7 +121,7 @@ export const productsCategory = async (req, res) => {
 //try
 export const adminUpdateProduct = async (req, res) => {
     const productId = req.params.id;
-    console.log(productId);
+    // console.log(productId);
     const { title, description, price, image, category } = req.body;
 
     console.log("body", req.body);
@@ -153,16 +153,12 @@ export const adminUpdateProduct = async (req, res) => {
 
 
 export const deleteProduct = async (req, res) => {
-  try {
     const productId = req.params.productid;
 
     const products = await Products.findByIdAndDelete(productId);
 
     if (!products) {
-      res.status(404).json({ meassge: "product not found" });
+     return res.status(404).json({ meassge: "product not found" });
     }
-    res.status(200).json({ message: "successfully delleted", data: products });
-  } catch (error) {
-    next(error);
-  }
+    return res.status(200).json({ message: "successfully delleted", data: products });
 };

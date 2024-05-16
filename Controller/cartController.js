@@ -5,7 +5,7 @@ import User from "../Models/userSchema.js";
 
 
  // product addToCart
-export const addToCart = async (req, res, next) => {
+export const addToCart = async (req, res) => {
 
     const userId = req.params.userid;
     const productId = req.params.productid;
@@ -55,9 +55,9 @@ export const viewCart=async(req,res,next)=>{
             populate:{path:"productId"}
         })
         if(!user){
-            res.status(404).json({meassage:"user not found"})
+         return   res.status(404).json({meassage:"user not found"})
         }
-        res.status(200).json(user.cart)
+          return res.status(200).json(user.cart)
     
 }
 
@@ -74,29 +74,29 @@ export const addCartQuantity=async(req,res,next)=>{
         const user=await User.findById(userId)
         console.log(user);
         if(!user){
-          res.status(404).json({message:"user not found"})
+         return  res.status(404).json({message:"user not found"})
         }
         // find product by id
         const product=await Products.findById(productId)
         console.log(product);
         if(!product){
-          res.status(404).json({message:"product not found"})
+         return res.status(404).json({message:"product not found"})
         }
         //find or create item
         const cartItem =await Cart.findOne({userId:user._id,productId:product._id})
         console.log(cartItem);
         if(cartItem){
           if(typeof quantityIncrement !=="number"){
-            res.status(400).json({message:"bad request"})
+           return res.status(400).json({message:"bad request"})
           }else{
             cartItem.quantity += quantityIncrement;
             await cartItem.save()
           }
         }
-          res.status(201).json({message:"quantity incremented"})
+          return res.status(201).json({message:"quantity incremented"})
 }
 
-export const decremntQuantity=async(req,res,next)=>{
+export const decremntQuantity=async(req,res)=>{
 
     const userId=req.params.userid
     const productId=req.params.productid
@@ -104,7 +104,7 @@ export const decremntQuantity=async(req,res,next)=>{
 
     //find user by id
     const user=await User.findById(userId)
-    console.log(user);
+    // console.log(user);
     if(!user){
       res.status(404).json({message:"user not found"})
     }
@@ -112,7 +112,7 @@ export const decremntQuantity=async(req,res,next)=>{
     const product=await Products.findById(productId)
     console.log(product);
     if(!product){
-      res.status(404).json({message:"product not found"})
+      return res.status(404).json({message:"product not found"})
     }
     //find or create item
     let cartItem = await Cart.findOne({ userId: user._id, productId: product._id });
@@ -131,10 +131,11 @@ export const decremntQuantity=async(req,res,next)=>{
         }
         
     }
-    res.status(201).json({ message: "Quantity decremented" });
+   
+     return res.status(201).json({ message: "Quantity decremented" });
 }
 
-export const removeCart=async(req,res,next)=>{
+export const removeCart=async(req,res)=>{
   
     const{userId,productId}=req.params
 
@@ -142,17 +143,17 @@ export const removeCart=async(req,res,next)=>{
  const user=await User.findById(userId)
  console.log(userId);
  if(!user){
-  res.status(404).json({message:"user not found"})
+   return res.status(404).json({message:"user not found"})
  }
 
  //find by product
  const product=await Products.findById(productId)
  if(!product){
-  res.status(404).json({message:"product not found"})
+   return res.status(404).json({message:"product not found"})
  }
  const cartItem=await Cart.findOneAndDelete({userId:user._id,productId:product._id})
   if(!cartItem){
-    res.status(404).json({message:"product not found in the user cart"})
+    return res.status(404).json({message:"product not found in the user cart"})
   }
   //ind the index of the cart item in the user's cartItems array
   const cartItemIndex=user.cart.findIndex(item=>item.equals(cartItem._id))
@@ -162,7 +163,7 @@ export const removeCart=async(req,res,next)=>{
    if(cartItemIndex !== -1){
     user.cart.splice(cartItemIndex,1)
     await user.save()
-    res.status(200).json({message:"product removed successfully"})
+    return res.status(200).json({message:"product removed successfully"})
    }
    
 }
