@@ -10,8 +10,8 @@ import Cart from "../Models/cartSchema.js"
 const stripeInstance = stripe(process.env.STRIPE_SECURITY_KEY);
 
  let Svalue={}
-export const payment = async (req, res,next) => {
-  try {
+export const payment = async (req, res) => {
+  
     const userId = req.params.userid;
     const user = await User.findById(userId).populate({
       path: "cart",
@@ -67,20 +67,16 @@ export const payment = async (req, res,next) => {
     //  await Cart.findByIdAndDelete(user.cart._id)    
   
   
-    res.status(200).json({
+   return res.status(200).json({
       message: "Stripe payment session created successfully",
       url: session.url,
       totalAmount,
       totalQuantity,
     });
-  } catch (error) {
-    next(error)
-  }
- 
 } 
 
-export const success = async (req, res, next) => {
-  try {
+export const success = async (req, res) => {
+
     const { userId, user, session } = Svalue;
 
     const cartItems= user.cart
@@ -115,11 +111,8 @@ export const success = async (req, res, next) => {
     // Remove all items from user's cart after successful payment
     await Cart.deleteMany({ _id: { $in: cartItems.map(item => item._id) } });
 
-    res.status(200).json({ message: "Payment successful" });
-  } catch (error) {
-    console.error("Error:", error);
-    return next(error);
-  }
+   return res.status(200).json({ message: "Payment successful" });
+ 
 };
 
 
@@ -131,10 +124,10 @@ export const orderDetails=async(req,res)=>{
        populate:{path:"productId"}
   })
   if(!user){
-    res.status(404).json({message:"user not found"})
+    return res.status(404).json({message:"user not found"})
   }
   if(!user.orders||user.orders.length===0){
-   res.status(200).json({message:"user order is empty",data:[]})
+    return res.status(200).json({message:"user order is empty",data:[]})
   }
-  res.status(200).json(user.orders)
+    return res.status(200).json(user.orders)
 }

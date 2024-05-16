@@ -16,7 +16,7 @@ export const productById=async(req,res)=>{
    if(!product){
    return res.status(404).json({Error:"not found",message:"product not found"})
    }
-   res.status(200).json({product})
+   return res.status(200).json({product})
 }
 
 export const productByCategory=async(req,res)=>{

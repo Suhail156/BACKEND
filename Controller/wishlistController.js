@@ -4,7 +4,7 @@ import Wishlist from "../Models/wishlistSchem.js"
 
 
 
-export const addToWishlist=async(req,res,next)=>{
+export const addToWishlist=async(req,res)=>{
 
       
         const userId=req.params.userid
@@ -14,19 +14,19 @@ export const addToWishlist=async(req,res,next)=>{
         const user=await User.findById(userId)
         console.log(userId);
         if(!user){
-            res.status(404).json({message:"user not found"})
+          return  res.status(404).json({message:"user not found"})
         }
         //find by id product
         const product=await Products.findById(productId)
         if(!product){
-            res.status(404).json({message:"product not found"})
+          return   res.status(404).json({message:"product not found"})
         }
 
     //check already in the whishlist
 
     let wishListitem=await Wishlist.findOne({userId:user._id,productId:product._id})
     if(wishListitem){
-        res.status(400).json({message:"already exist in whishlist"})
+      return  res.status(400).json({message:"already exist in whishlist"})
     }
     //create a new whishlist
    wishListitem=await Wishlist.create({
@@ -39,7 +39,7 @@ export const addToWishlist=async(req,res,next)=>{
     user.wishlist.push(wishListitem._id)
      await user.save()
   
-      res.status(200).json({message:"successfully added to wishlist"})
+     return  res.status(200).json({message:"successfully added to wishlist"})
        
 
 }   
@@ -51,12 +51,12 @@ export const addToWishlist=async(req,res,next)=>{
           populate:{path:"productId"}
         })
              if(!user){
-              return  res.status(404).json({message:"user not found"})
+               return  res.status(404).json({message:"user not found"})
              }
             if(!user.wishlist||user.wishlist.length===0){
-              res.status(200).json({message:"user empty",data:[]})
+              return res.status(200).json({message:"user empty",data:[]})
             } 
-            res.status(200).json({message:"success",data:user.wishlist})   
+             return res.status(200).json({message:"success",data:user.wishlist})   
  
  }
 
@@ -67,22 +67,22 @@ export const removewishlist=async(req,res)=>{
     //find user id
     const user=await User.findById(userId)
     if(!user){
-        res.status(404).json({message:"user not found"})
+     return   res.status(404).json({message:"user not found"})
     }
     //find product id
     const product=await Products.findById(productId)
     if(!product){
-        res.status(404).json({message:"product not found"})
+       return res.status(404).json({message:"product not found"})
     }
   
      const wishlistItem=await Wishlist.findOneAndDelete({userId:user._id,productId:product._id})
      if(!wishlistItem){
-        res.status(404).json({message:"product not found in wishlist"})
+       return res.status(404).json({message:"product not found in wishlist"})
      }
      const wishlistItemIndex= user.wishlist.find(item=>item.equals(wishlistItem._id)) 
     if(wishlistItem !==-1){
         user.wishlist.splice(wishlistItemIndex,1)
         await user.save()
-        res.status(200).json({message:"successfully removed"})
+      return  res.status(200).json({message:"successfully removed"})
     }
 }
