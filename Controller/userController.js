@@ -4,7 +4,7 @@ import Jwt from "jsonwebtoken";
 import bcrypt from "bcrypt"
 
 export const signup = async (req, res) => {
-  try {
+ 
     const { value, error } = userjoi.validate(req.body);
 
     if (error) {
@@ -12,13 +12,13 @@ export const signup = async (req, res) => {
     }
 
     const { username, image, email, password } = value;
-    console.log(value);
+    // console.log(value);
 
     // Check username already exists
     const existingUser = await User.findOne({ email:email });
     if (existingUser) {
-      return res.status(400).json({
-        status: "error",message: "email already taken!"});
+    return res.status(400).json({
+     status: "error",message: "email already taken!"});
     }
 
 
@@ -38,40 +38,33 @@ export const signup = async (req, res) => {
     return res.status(201).json({ status: "success",message: "User registered successfully",
       data:newUser
     });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({status: "error",message: "An unexpected error occurred"});
-  }
 };
 
 //user login
-export const login=async(req,res,next)=>{
-  try {
+export const login=async(req,res)=>{
+  
     const{email,password}=req.body
-    console.log(req.body);
+    // console.log(req.body);
     //find user
     const uservalid=await User.findOne({email})
-    console.log(uservalid);
+    // console.log(uservalid);
     if(!uservalid) {
-      res.status(404).json({error:"user not found"})
+     return res.status(404).json({error:"user not found"})
     }
   //password checking
    const validpass=bcrypt.compareSync(password,uservalid.password)
-   console.log(validpass);
+  //  console.log(validpass);
    if(!validpass){
-    res.status(401).json({error:"Wrong credential"})
+   return res.status(401).json({error:"Wrong credential"})
    }
    //jwt
-   const token=Jwt.sign({id:uservalid._id},process.env.USER_SECRET_TOKEN)
+   const token=Jwt.sign({id:uservalid._id},process.env.USER_SECRET_TOKEN,{expiresIn:"60"})
    const{password:hashedPassword, ...rest}=uservalid._doc
-   const expirydate=new Date(Date.now() +60 * 1000)
- const refreshToken=Jwt.sign({id:uservalid._id},process.env.REFRESH_ACCESS_TOKEN,{expiresIn:"10m"})
+  //  const expirydate=new Date(Date.now() +60 * 20)
+  const refreshToken=Jwt.sign({id:uservalid._id},process.env.REFRESH_ACCESS_TOKEN)
    //cookie
-   res.cookie("access_token",token,{httpOnly:true,expires:expirydate})
-     res.cookie("refresh_token",refreshToken,{httpOnly:true})
+   res.cookie("access_token",token,{httpOnly:true})
+   res.cookie("refresh_token",refreshToken,{httpOnly:true})  
    .status(200).json(rest)
     res.status(200).json({message:"successfully login",data:uservalid})
-  } catch (error) {
-    next(error)
-  }
 }

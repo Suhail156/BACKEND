@@ -20,7 +20,7 @@ router.delete("/:userId/unblock",TrycatchMiddleware(unBlockUserById))
 
 
 //product
-router.post("/createProducts",imageUpload,createProducts)
+router.post("/createProducts",imageUpload,TrycatchMiddleware(createProducts))
 router.get("/:productid/product",TrycatchMiddleware(getByIdProduct))  
 router.get("/:categoryname/products",TrycatchMiddleware(productByCategory))
 router.get("/allproducts",TrycatchMiddleware(viewProducts))
