@@ -16,7 +16,7 @@ export const adminLogin = async (req, res) => {
 
             res.cookie('access_token', token, { httpOnly: true });
 
-            res.status(200).json({ message: "Admin logged in successfully", token });
+            return res.status(200).json({ message: "Admin logged in successfully", token });
         } else {
     
             res.status(401).json({ message: "Unauthorized" });
@@ -30,9 +30,9 @@ export const adminLogin = async (req, res) => {
  export const viewAllusers=async(req,res,next)=>{
         const viewUser=await User.find()
         if(viewUser.length===0){
-            res.status(404).json({message:"no users in db"})
+          return  res.status(404).json({message:"no users in db"})
         }
-        res.status(200).json(viewUser)
+      return  res.status(200).json(viewUser)
     
    
  } 
@@ -41,9 +41,9 @@ export const userGetById=async(req,res)=>{
     const userId=req.params.id
     const allusers=await User.findById(userId)
     if(!allusers){
-        res.status(404).json({message:"user not found"})
+      return  res.status(404).json({message:"user not found"})
     }
-    res.status(200).json(allusers)
+    return  res.status(200).json(allusers)
 
 }
 //block user 
@@ -53,9 +53,9 @@ export const blockUserById=async(req,res)=>{
 
     const blockUser=await User.findOneAndUpdate({_id:userId},{$set:{isDeleted:true}})
     if(!blockUser){
-        res.status(404).json({message:"user not found"})
+      return  res.status(404).json({message:"user not found"})
     }
-    res.status(200).json({message:"user blocked successfully"})
+     return res.status(200).json({message:"user blocked successfully"})
 }
 
 //unblock user
@@ -64,7 +64,7 @@ export const unBlockUserById=async(req,res)=>{
     const{userId}=req.params
     const unBlock=await User.findOneAndUpdate({_id:userId},{$set:{isDeleted:false}})
     if(!unBlock){
-        res.status(404).json({message:"user not found"})
+       return res.status(404).json({message:"user not found"})
     }
-    res.status(200).json({message:"user successfully unblocked"})
+      return res.status(200).json({message:"user successfully unblocked"})
 }
