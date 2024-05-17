@@ -5,7 +5,7 @@ import { adminLogin, blockUserById, unBlockUserById, userGetById, viewAllusers }
 import { adminToken} from '../Middlewares/adminMiddleware.js'
 import { productByCategory } from '../Controller/productController.js'
 import TrycatchMiddleware from '../Middlewares/tryCatchMiddleware.js'
-import { allOrders } from '../Controller/adminOrders.js'
+import { allOrders, status } from '../Controller/adminOrders.js'
 
 const router=express.Router()
 //login
@@ -29,4 +29,5 @@ router.delete("/:productid/delete",TrycatchMiddleware(deleteProduct))
 
 //order
 router.get("/allorders",TrycatchMiddleware(allOrders))
+router.get("/status",TrycatchMiddleware(status))
 export default router

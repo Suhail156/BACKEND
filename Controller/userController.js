@@ -65,6 +65,5 @@ export const login=async(req,res)=>{
    //cookie
    res.cookie("access_token",token,{httpOnly:true})
    res.cookie("refresh_token",refreshToken,{httpOnly:true})  
-   .status(200).json(rest)
-    return res.status(200).json({message:"successfully login",data:uservalid})
+   return res.status(200).json({ message: "successfully login", data: rest });
 }
